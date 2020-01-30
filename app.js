@@ -10,7 +10,7 @@ const fs = require("fs");
 
 
 //Global Variables
-let count = 0; //Count = ID
+let count = 1; //Count = ID
 const team = []; //Empty array to push team onto
 
 buildTeam = () => {
@@ -56,17 +56,23 @@ buildTeam = () => {
                 team.push(manager); // Add new employee to team
                 if (data.done === "No") {
                     count++;
+                    console.log(`\n ---NEW TEAM MEMBER --- \n`);
                     buildTeam();
                 } else if (data.done === "Yes") {
-                    for (let i = 0; i < team.length; i++) {
-                        fs.appendFile("team.txt", JSON.stringify(team[i], null, 2), (err) => {
-                            if (err) {
-                                console.log(err)
-                            } else {
-                                console.log(`${team[i].name} was added to the team`)
+                    fs.writeFile("team.txt", "        Team        \n========================\n", (err) => {
+                        if (err) { console.log(err) } else {
+                            for (let i = 0; i < team.length; i++) {
+                                fs.appendFile("team.txt", JSON.stringify(team[i], null, 2), (err) => {
+                                    if (err) {
+                                        console.log(err)
+                                    } else {
+                                        console.log("\n");
+                                        console.log(`${team[i].name} was added to the team`)
+                                    }
+                                })
                             }
-                        })
-                    }
+                        }
+                    })
                 }
             })
         }
@@ -93,17 +99,22 @@ buildTeam = () => {
                 // generate ManagerCard()
                 if (data.done === "No") {
                     count++;
+                    console.log(`\n ---NEW TEAM MEMBER --- \n`)
                     buildTeam();
                 } else if (data.done === "Yes") {
-                    for (let i = 0; i < team.length; i++) {
-                        fs.appendFile("team.txt", JSON.stringify(team[i], null, 2), (err) => {
-                            if (err) {
-                                console.log(err)
-                            } else {
-                                console.log(`${team[i].name} was added to the team`)
+                    fs.writeFile("team.txt", "    Team    \n============", (err) => {
+                        if (err) { console.log(err) } else {
+                            for (let i = 0; i < team.length; i++) {
+                                fs.appendFile("team.txt", JSON.stringify(team[i], null, 2), (err) => {
+                                    if (err) {
+                                        console.log(err)
+                                    } else {
+                                        console.log(`${team[i].name} was added to the team`)
+                                    }
+                                })
                             }
-                        })
-                    }
+                        }
+                    })
                 }
             })
         }
@@ -130,17 +141,22 @@ buildTeam = () => {
                 // generate ManagerCard()
                 if (data.done === "No") {
                     count++;
+                    console.log(`\n ---NEW TEAM MEMBER --- \n`)
                     buildTeam();
                 } else if (data.done === "Yes") {
-                    for (let i = 0; i < team.length; i++) {
-                        fs.appendFile("team.txt", JSON.stringify(team[i], null, 2), (err) => {
-                            if (err) {
-                                console.log(err)
-                            } else {
-                                console.log(`${team[i].name} was added to the team`)
+                    fs.writeFile("team.txt", "    Team    \n============", (err) => {
+                        if (err) { console.log(err) } else {
+                            for (let i = 0; i < team.length; i++) {
+                                fs.appendFile("team.txt", JSON.stringify(team[i], null, 2), (err) => {
+                                    if (err) {
+                                        console.log(err)
+                                    } else {
+                                        console.log(`${team[i].name} was added to the team`)
+                                    }
+                                })
                             }
-                        })
-                    }
+                        }
+                    })
                 }
             })
         }
