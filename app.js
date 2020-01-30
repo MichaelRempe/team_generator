@@ -53,14 +53,13 @@ buildTeam = () => {
                 }
             ]).then(function (data) {
                 const manager = new Manager(name, role, id, data.officeNumber);
-                team.push(manager);
-                // generate ManagerCard()
+                team.push(manager); // Add new employee to team
                 if (data.done === "No") {
                     count++;
                     buildTeam();
                 } else if (data.done === "Yes") {
                     for (let i = 0; i < team.length; i++) {
-                        fs.appendFile("team.txt", team[i], (err) => {
+                        fs.appendFile("team.txt", JSON.stringify(team[i], null, 2), (err) => {
                             if (err) {
                                 console.log(err)
                             } else {
@@ -97,7 +96,7 @@ buildTeam = () => {
                     buildTeam();
                 } else if (data.done === "Yes") {
                     for (let i = 0; i < team.length; i++) {
-                        fs.appendFile("team.txt", team[i], (err) => {
+                        fs.appendFile("team.txt", JSON.stringify(team[i], null, 2), (err) => {
                             if (err) {
                                 console.log(err)
                             } else {
@@ -134,7 +133,7 @@ buildTeam = () => {
                     buildTeam();
                 } else if (data.done === "Yes") {
                     for (let i = 0; i < team.length; i++) {
-                        fs.appendFile("team.txt", team[i], (err) => {
+                        fs.appendFile("team.txt", JSON.stringify(team[i], null, 2), (err) => {
                             if (err) {
                                 console.log(err)
                             } else {
