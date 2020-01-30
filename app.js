@@ -5,13 +5,15 @@ const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 // Modules
-var Inquirer = require("inquirer")
+const Inquirer = require("inquirer");
+const fs = require("fs");
+
 
 //Global Variables
 let count = 0; //Count = ID
 const team = []; //Empty array to push team onto
 
-buildTeam = ()=>{
+buildTeam = () => {
     Inquirer.prompt([
         {
             type: "input",
@@ -28,11 +30,11 @@ buildTeam = ()=>{
                 "Intern"
             ]
         }
-    ]).then(function(response){
+    ]).then(function (response) {
         let name = response.name;
         let role = response.role;
         let id = count;
-        if(response.role === "Manager"){
+        if (response.role === "Manager") {
             // new inquire for office number
             Inquirer.prompt([
                 {
@@ -42,28 +44,34 @@ buildTeam = ()=>{
                 },
                 {
                     type: "list",
-                    message:"Is this the last team-member? (y/n)",
+                    message: "Is this the last team-member? (y/n)",
                     name: "done",
-                    choices:[
+                    choices: [
                         "Yes",
                         "No"
                     ]
                 }
-            ]).then(function(data){
-                const manager =  new Manager(name, role, id, data.officeNumber);
+            ]).then(function (data) {
+                const manager = new Manager(name, role, id, data.officeNumber);
                 team.push(manager);
                 // generate ManagerCard()
-                if(data.done === "No"){
+                if (data.done === "No") {
+                    count++;
                     buildTeam();
-                }else if(data.done === "Yes"){
-                    for(let i=0; i<team.length; i++){
-                        console.log(`========== Team Member ${team[0].id} ==========`);
-                        console.log(team[i]);
+                } else if (data.done === "Yes") {
+                    for (let i = 0; i < team.length; i++) {
+                        fs.appendFile("team.txt", team[i], (err) => {
+                            if (err) {
+                                console.log(err)
+                            } else {
+                                console.log(`${team[i].name} was added to the team`)
+                            }
+                        })
                     }
                 }
             })
         }
-        if(response.role === "Engineer"){
+        if (response.role === "Engineer") {
             // new inquire for Github
             Inquirer.prompt([
                 {
@@ -73,28 +81,34 @@ buildTeam = ()=>{
                 },
                 {
                     type: "list",
-                    message:"Is this the last team-member? (y/n)",
+                    message: "Is this the last team-member? (y/n)",
                     name: "done",
-                    choices:[
+                    choices: [
                         "Yes",
                         "No"
                     ]
                 }
-            ]).then(function(data){
+            ]).then(function (data) {
                 const engineer = new Engineer(name, role, id, data.userName);
                 team.push(engineer);
                 // generate ManagerCard()
-                if(data.done === "No"){
+                if (data.done === "No") {
+                    count++;
                     buildTeam();
-                }else if(data.done === "Yes"){
-                    for(let i=0; i<team.length; i++){
-                        console.log(`========== Team Member ${team[0].id} ==========`);
-                        console.log(team[i]);
+                } else if (data.done === "Yes") {
+                    for (let i = 0; i < team.length; i++) {
+                        fs.appendFile("team.txt", team[i], (err) => {
+                            if (err) {
+                                console.log(err)
+                            } else {
+                                console.log(`${team[i].name} was added to the team`)
+                            }
+                        })
                     }
                 }
             })
         }
-        if(response.role === "Intern"){
+        if (response.role === "Intern") {
             // new inquire for University
             Inquirer.prompt([
                 {
@@ -104,27 +118,33 @@ buildTeam = ()=>{
                 },
                 {
                     type: "list",
-                    message:"Is this the last team-member? (y/n)",
+                    message: "Is this the last team-member? (y/n)",
                     name: "done",
-                    choices:[
+                    choices: [
                         "Yes",
                         "No"
                     ]
                 }
-            ]).then(function(data){
+            ]).then(function (data) {
                 const intern = new Intern(name, role, id, data.school);
                 team.push(intern);
                 // generate ManagerCard()
-                if(data.done === "No"){
+                if (data.done === "No") {
+                    count++;
                     buildTeam();
-                }else if(data.done === "Yes"){
-                    for(let i=0; i<team.length; i++){
-                        console.log(`========== Team Member ${team[0].id} ==========`);
-                        console.log(team[i]);
+                } else if (data.done === "Yes") {
+                    for (let i = 0; i < team.length; i++) {
+                        fs.appendFile("team.txt", team[i], (err) => {
+                            if (err) {
+                                console.log(err)
+                            } else {
+                                console.log(`${team[i].name} was added to the team`)
+                            }
+                        })
                     }
                 }
             })
         }
-    })  
+    })
 }
 buildTeam();
