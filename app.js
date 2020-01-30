@@ -1,9 +1,7 @@
 const Employee = require("./lib/Employee");
-const Inquirer = require("inquire");
+const Inquirer = require("inquirer");
 
 let count = 0;
-
-while(input != exit){
     Inquirer.prompt([
         {
             type: "input",
@@ -34,6 +32,7 @@ while(input != exit){
                 }
             ]).then(function(data){
                 const Manager =  new Manager(name, role, id, data.officeNumber);
+                console.log(Manager);
                 // generate ManagerCard()
             })
         }
@@ -47,6 +46,7 @@ while(input != exit){
                 }
             ]).then(function(data){
                 const Engineer = new Engineer(name, role, id, data.userName);
+                console.log(Engineer);
                 // generate ManagerCard()
             })
         }
@@ -60,8 +60,8 @@ while(input != exit){
                 }
             ]).then(function(data){
                 const Intern = new Intern(name, role, id, data.school);
+                console.log(Intern);
                 // generate ManagerCard()
             })
         }
     })
-}
