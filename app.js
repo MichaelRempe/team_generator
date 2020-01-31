@@ -133,7 +133,7 @@ createTeam = () => {
                     console.log(`\n ---NEW TEAM MEMBER --- \n`)
                     createTeam();
                 } else if (data.done === "Yes") {
-                    fs.writeFile("team.txt", "    Team    \n============", (err) => {
+                    fs.writeFile("team.txt", "    Team    \n============\n", (err) => {
                         if (err) { console.log(err) } else {
                             for (let i = 0; i < team.length; i++) {
                                 fs.appendFile("team.txt", my_toString(team[i]), (err) => {
