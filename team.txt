@@ -1,0 +1,25 @@
+    Team    
+============Position: Manager
+Name: Mike
+Employee ID: 1
+Contact: Mike@BCS.email.com
+Office Number: 1
+-------------------------
+Position: Intern
+Name: mike
+Employee ID: 3
+Contact: mike@BCS.email.com
+University: gw
+-------------------------
+Position: Manager
+Name: mike
+Employee ID: 2
+Contact: mike@BCS.email.com
+Office Number: 2
+-------------------------
+Position: Engineer
+Name: tom
+Employee ID: 4
+Contact: tom@BCS.email.com
+Github Username: gaef
+-------------------------

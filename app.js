@@ -14,11 +14,15 @@ let count = 1; //Count = ID
 const team = []; //Empty array to push team onto
 
 buildTeam = () => {
+    console.log("\n=========Build your professional team here!==========\n")
     Inquirer.prompt([
         {
             type: "input",
             message: "Please provide name of Employee/Team-member:",
-            name: "name"
+            name: "name",
+            validate: function validName(name){
+                return name !== '';
+            }
         },
         {
             type: "list",
@@ -40,7 +44,10 @@ buildTeam = () => {
                 {
                     type: "input",
                     message: "Please provide Manager's office number:",
-                    name: "officeNumber"
+                    name: "officeNumber",
+                    validate: function validNum(){
+                        return name !== NaN;
+                    }
                 },
                 {
                     type: "list",
@@ -62,7 +69,7 @@ buildTeam = () => {
                     fs.writeFile("team.txt", "        Team        \n========================\n", (err) => {
                         if (err) { console.log(err) } else {
                             for (let i = 0; i < team.length; i++) {
-                                fs.appendFile("team.txt", JSON.stringify(team[i], null, 2), (err) => {
+                                fs.appendFile("team.txt", my_toString(team[i]), (err) => {
                                     if (err) {
                                         console.log(err)
                                     } else {
@@ -105,7 +112,7 @@ buildTeam = () => {
                     fs.writeFile("team.txt", "    Team    \n============", (err) => {
                         if (err) { console.log(err) } else {
                             for (let i = 0; i < team.length; i++) {
-                                fs.appendFile("team.txt", JSON.stringify(team[i], null, 2), (err) => {
+                                fs.appendFile("team.txt", my_toString(team[i]), (err) => {
                                     if (err) {
                                         console.log(err)
                                     } else {
@@ -144,10 +151,10 @@ buildTeam = () => {
                     console.log(`\n ---NEW TEAM MEMBER --- \n`)
                     buildTeam();
                 } else if (data.done === "Yes") {
-                    fs.writeFile("team.txt", "    Team    \n============", (err) => {
+                    fs.writeFile("team.txt", "    Team    \n============\n", (err) => {
                         if (err) { console.log(err) } else {
                             for (let i = 0; i < team.length; i++) {
-                                fs.appendFile("team.txt", JSON.stringify(team[i], null, 2), (err) => {
+                                fs.appendFile("team.txt", my_toString(team[i]), (err) => {
                                     if (err) {
                                         console.log(err)
                                     } else {
@@ -161,5 +168,16 @@ buildTeam = () => {
             })
         }
     })
+}
+my_toString = (object) => {
+    if (object.role === "Manager") {
+        return `Position: ${object.role}\nName: ${object.name}\nEmployee ID: ${object.id}\nContact: ${object.email}\nOffice Number: ${object.officeNum}\n-------------------------\n`
+    }
+    if (object.role === "Engineer") {
+        return `Position: ${object.role}\nName: ${object.name}\nEmployee ID: ${object.id}\nContact: ${object.email}\nGithub Username: ${object.gitHub}\n-------------------------\n`
+
+    } else {
+        return `Position: ${object.role}\nName: ${object.name}\nEmployee ID: ${object.id}\nContact:${object.email}\nUniversity: ${object.school}\n-------------------------\n`
+    }
 }
 buildTeam();
