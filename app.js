@@ -10,26 +10,96 @@ const fs = require("fs");
 
 
 //Global Variables
-let count = 1; //Count = ID
 const team = []; //Empty array to push team onto
 
-buildTeam = () => {
-    console.log("\n=========Build your professional team here!==========\n")
+//Returns random 3 digit Employee ID
+generateRandom = () =>{
+    let r = 0;
+    for(let i=0; i<2; i++){
+        r = Math.floor(Math.random()*(1000-100)+100);
+    }
+    return r;
+}
+// Returns string literal to write to file based on employee object arg
+my_toString = (object) => {
+    if (object.role === "Manager") {
+        return `Position: ${object.role}\nName: ${object.name}\nEmployee ID: ${object.id}\nContact: ${object.email}\nOffice Number: ${object.officeNum}\n-------------------------\n`
+    }
+    if (object.role === "Engineer") {
+        return `Position: ${object.role}\nName: ${object.name}\nEmployee ID: ${object.id}\nContact: ${object.email}\nGithub Username: ${object.gitHub}\n-------------------------\n`
+
+    } else {
+        return `Position: ${object.role}\nName: ${object.name}\nEmployee ID: ${object.id}\nContact:${object.email}\nUniversity: ${object.school}\n-------------------------\n`
+    }
+}
+//Create Manager Obj --> only called once per team
+createManager = () => {
+    Inquirer.prompt([
+        {
+            type: "input",
+            message: "Please provide the name of the Team-Manager:",
+            name: "name"
+        },
+        {
+            type: "input",
+            message: "Please provide Manager's office number:",
+            name: "officeNumber"
+        },
+        {
+            type: "list",
+            message: "Is this the last team-member? (y/n)",
+            name: "done",
+            choices: [
+                "Yes",
+                "No"
+            ]
+        }
+    ]).then(function (data) {
+        let name = data.name;
+        let role = "Manager";
+        let id = generateRandom();
+        let officeNum = data.officeNumber;
+        //Manager OBJ
+        const manager = new Manager(name, role, id, officeNum);
+        team.push(manager); // Add manager to team
+        if (data.done === "No") {
+            console.log(`\n ---NEW TEAM MEMBER --- \n`);
+            createTeam();
+        } else if (data.done === "Yes") {
+            fs.writeFile("team.txt", "        Team        \n========================\n", (err) => {
+                if (err) { console.log(err) } else {
+                    for (let i = 0; i < team.length; i++) {
+                        fs.appendFile("team.txt", my_toString(team[i]), (err) => {
+                            if (err) {
+                                console.log(err)
+                            } else {
+                                console.log("\n");
+                                console.log(`${team[i].name} was added to the team`)
+                            }
+                        })
+                    }
+                }
+            })
+        }
+    }
+    )
+}
+//Create the rest of the team recursively 
+createTeam = () => {
     Inquirer.prompt([
         {
             type: "input",
             message: "Please provide name of Employee/Team-member:",
             name: "name",
-            validate: function validName(name){
+            validate: function validName(name) {
                 return name !== '';
             }
         },
         {
             type: "list",
-            message: "Select team member's role:",
+            message: "Select new team member's role:",
             name: "role",
             choices: [
-                "Manager",
                 "Engineer",
                 "Intern"
             ]
@@ -37,52 +107,7 @@ buildTeam = () => {
     ]).then(function (response) {
         let name = response.name;
         let role = response.role;
-        let id = count;
-        if (response.role === "Manager") {
-            // new inquire for office number
-            Inquirer.prompt([
-                {
-                    type: "input",
-                    message: "Please provide Manager's office number:",
-                    name: "officeNumber",
-                    validate: function validNum(){
-                        return name !== NaN;
-                    }
-                },
-                {
-                    type: "list",
-                    message: "Is this the last team-member? (y/n)",
-                    name: "done",
-                    choices: [
-                        "Yes",
-                        "No"
-                    ]
-                }
-            ]).then(function (data) {
-                const manager = new Manager(name, role, id, data.officeNumber);
-                team.push(manager); // Add new employee to team
-                if (data.done === "No") {
-                    count++;
-                    console.log(`\n ---NEW TEAM MEMBER --- \n`);
-                    buildTeam();
-                } else if (data.done === "Yes") {
-                    fs.writeFile("team.txt", "        Team        \n========================\n", (err) => {
-                        if (err) { console.log(err) } else {
-                            for (let i = 0; i < team.length; i++) {
-                                fs.appendFile("team.txt", my_toString(team[i]), (err) => {
-                                    if (err) {
-                                        console.log(err)
-                                    } else {
-                                        console.log("\n");
-                                        console.log(`${team[i].name} was added to the team`)
-                                    }
-                                })
-                            }
-                        }
-                    })
-                }
-            })
-        }
+        let id = generateRandom();
         if (response.role === "Engineer") {
             // new inquire for Github
             Inquirer.prompt([
@@ -105,9 +130,8 @@ buildTeam = () => {
                 team.push(engineer);
                 // generate ManagerCard()
                 if (data.done === "No") {
-                    count++;
                     console.log(`\n ---NEW TEAM MEMBER --- \n`)
-                    buildTeam();
+                    createTeam();
                 } else if (data.done === "Yes") {
                     fs.writeFile("team.txt", "    Team    \n============", (err) => {
                         if (err) { console.log(err) } else {
@@ -147,9 +171,8 @@ buildTeam = () => {
                 team.push(intern);
                 // generate ManagerCard()
                 if (data.done === "No") {
-                    count++;
                     console.log(`\n ---NEW TEAM MEMBER --- \n`)
-                    buildTeam();
+                    createTeam();
                 } else if (data.done === "Yes") {
                     fs.writeFile("team.txt", "    Team    \n============\n", (err) => {
                         if (err) { console.log(err) } else {
@@ -169,15 +192,11 @@ buildTeam = () => {
         }
     })
 }
-my_toString = (object) => {
-    if (object.role === "Manager") {
-        return `Position: ${object.role}\nName: ${object.name}\nEmployee ID: ${object.id}\nContact: ${object.email}\nOffice Number: ${object.officeNum}\n-------------------------\n`
-    }
-    if (object.role === "Engineer") {
-        return `Position: ${object.role}\nName: ${object.name}\nEmployee ID: ${object.id}\nContact: ${object.email}\nGithub Username: ${object.gitHub}\n-------------------------\n`
 
-    } else {
-        return `Position: ${object.role}\nName: ${object.name}\nEmployee ID: ${object.id}\nContact:${object.email}\nUniversity: ${object.school}\n-------------------------\n`
-    }
+//Control Flow and CLI Styling
+buildTeam = () => {
+    console.log("\n=========Build your professional team here!==========\n")
+    createManager();
+    
 }
 buildTeam();
