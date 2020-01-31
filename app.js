@@ -13,10 +13,10 @@ const fs = require("fs");
 const team = []; //Empty array to push team onto
 
 //Returns random 3 digit Employee ID
-generateRandom = () =>{
+generateRandom = () => {
     let r = 0;
-    for(let i=0; i<2; i++){
-        r = Math.floor(Math.random()*(1000-100)+100);
+    for (let i = 0; i < 2; i++) {
+        r = Math.floor(Math.random() * (1000 - 100) + 100);
     }
     return r;
 }
@@ -63,21 +63,32 @@ createManager = () => {
         const manager = new Manager(name, role, id, officeNum);
         team.push(manager); // Add manager to team
         if (data.done === "No") {
-            console.log(`\n ---NEW TEAM MEMBER --- \n`);
-            createTeam();
-        } else if (data.done === "Yes") {
+            //Append Manager OBJ to Team Profile
             fs.writeFile("team.txt", "        Team        \n========================\n", (err) => {
                 if (err) { console.log(err) } else {
-                    for (let i = 0; i < team.length; i++) {
-                        fs.appendFile("team.txt", my_toString(team[i]), (err) => {
-                            if (err) {
-                                console.log(err)
-                            } else {
-                                console.log("\n");
-                                console.log(`${team[i].name} was added to the team`)
-                            }
-                        })
-                    }
+                    fs.appendFile("team.txt", my_toString(manager), (err) => {
+                        if (err) {
+                            console.log(err)
+                        } 
+                    })
+                }
+            })
+            // prompt for more team members
+            console.log(`\n${manager.name} was added as Team Manager`)
+            console.log(`\n---NEW TEAM MEMBER --- \n`);
+            createTeam();
+        } else if (data.done === "Yes") {
+            //Append Manager OBJ to team File
+            fs.writeFile("team.txt", "        Team        \n========================\n", (err) => {
+                if (err) { console.log(err) } else {
+                    fs.appendFile("team.txt", my_toString(manager), (err) => {
+                        if (err) {
+                            console.log(err)
+                        } else {
+                            console.log("\n");
+                            console.log(`${manager.name} was added as Team Manager`)
+                        }
+                    })
                 }
             })
         }
@@ -133,19 +144,15 @@ createTeam = () => {
                     console.log(`\n ---NEW TEAM MEMBER --- \n`)
                     createTeam();
                 } else if (data.done === "Yes") {
-                    fs.writeFile("team.txt", "    Team    \n============\n", (err) => {
-                        if (err) { console.log(err) } else {
-                            for (let i = 0; i < team.length; i++) {
-                                fs.appendFile("team.txt", my_toString(team[i]), (err) => {
-                                    if (err) {
-                                        console.log(err)
-                                    } else {
-                                        console.log(`${team[i].name} was added to the team`)
-                                    }
-                                })
+                    for (let i = 1; i < team.length; i++) {
+                        fs.appendFile("team.txt", my_toString(team[i]), (err) => {
+                            if (err) {
+                                console.log(err)
+                            } else {
+                                console.log(`${team[i].name} was added to the team`)
                             }
-                        }
-                    })
+                        })
+                    }
                 }
             })
         }
@@ -174,29 +181,26 @@ createTeam = () => {
                     console.log(`\n ---NEW TEAM MEMBER --- \n`)
                     createTeam();
                 } else if (data.done === "Yes") {
-                    fs.writeFile("team.txt", "    Team    \n============\n", (err) => {
-                        if (err) { console.log(err) } else {
-                            for (let i = 0; i < team.length; i++) {
-                                fs.appendFile("team.txt", my_toString(team[i]), (err) => {
-                                    if (err) {
-                                        console.log(err)
-                                    } else {
-                                        console.log(`${team[i].name} was added to the team`)
-                                    }
-                                })
+                    for (let i = 1; i < team.length; i++) {
+                        fs.appendFile("team.txt", my_toString(team[i]), (err) => {
+                            if (err) {
+                                console.log(err)
+                            } else {
+                                console.log(`${team[i].name} was added to the team`)
                             }
-                        }
-                    })
+                        })
+                    }
                 }
             })
         }
     })
 }
 
+
 //Control Flow and CLI Styling
 buildTeam = () => {
     console.log("\n=========Build your professional team here!==========\n")
     createManager();
-    
+
 }
 buildTeam();
