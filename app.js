@@ -20,6 +20,18 @@ generateRandom = () => {
     }
     return r;
 }
+// Validates string input (name, username, school)
+function isString(val){
+    if(val === '' || typeof(val) !== typeof("sampleString")){
+        return "valid input contains a string type and cannot be blank"
+    }
+} 
+// Validates numeric input (room number)
+function isNum(val){
+    if(typeof(val) !== typeof(1)){
+        return "valid input must be numeric"
+    }
+}
 // Returns string literal to write to file based on employee object arg
 my_toString = (object) => {
     if (object.role === "Manager") {
@@ -38,12 +50,25 @@ createManager = () => {
         {
             type: "input",
             message: "Please provide the name of the Team-Manager:",
-            name: "name"
+            name: "name",
+            // validate: function valid(name){
+            //     if(name === ""){
+            //         return "Invalid String Entry";
+            //     }
+            //     else if(typeof(name) != typeof("string")){
+            //         return "Invalid String Entry";
+            //     }else{
+            //         return true;
+            //     }
+            // }
         },
         {
             type: "input",
             message: "Please provide Manager's office number:",
-            name: "officeNumber"
+            name: "officeNumber",
+            // validate: function valid(num){
+
+            // }
         },
         {
             type: "list",
@@ -64,9 +89,9 @@ createManager = () => {
         team.push(manager); // Add manager to team
         if (data.done === "No") {
             //Append Manager OBJ to Team Profile
-            fs.writeFile("team.txt", "        Team        \n========================\n", (err) => {
+            fs.writeFile("./output/team.txt", "        Team        \n========================\n", (err) => {
                 if (err) { console.log(err) } else {
-                    fs.appendFile("team.txt", my_toString(manager), (err) => {
+                    fs.appendFile("./output/team.txt", my_toString(manager), (err) => {
                         if (err) {
                             console.log(err)
                         } 
@@ -79,9 +104,9 @@ createManager = () => {
             createTeam();
         } else if (data.done === "Yes") {
             //Append Manager OBJ to team File
-            fs.writeFile("team.txt", "        Team        \n========================\n", (err) => {
+            fs.writeFile("./output/team.txt", "        Team        \n========================\n", (err) => {
                 if (err) { console.log(err) } else {
-                    fs.appendFile("team.txt", my_toString(manager), (err) => {
+                    fs.appendFile("./output/team.txt", my_toString(manager), (err) => {
                         if (err) {
                             console.log(err)
                         } else {
@@ -102,10 +127,13 @@ createTeam = () => {
             type: "input",
             message: "Please provide name of Employee/Team-member:",
             name: "name",
-            validate: function validName(name) {
-                return name !== '';
-            }
+            // validate: function validName(name) {
+            //     if(name == '' || typeof(name)== "NaN") {
+            //         return "Valid name requires length of 1 and cannot be a number";                    
+            //     }
+            // }
         },
+        
         {
             type: "list",
             message: "Select new team member's role:",
@@ -145,7 +173,7 @@ createTeam = () => {
                     createTeam();
                 } else if (data.done === "Yes") {
                     for (let i = 1; i < team.length; i++) {
-                        fs.appendFile("team.txt", my_toString(team[i]), (err) => {
+                        fs.appendFile("./output/team.txt", my_toString(team[i]), (err) => {
                             if (err) {
                                 console.log(err)
                             } else {
@@ -182,7 +210,7 @@ createTeam = () => {
                     createTeam();
                 } else if (data.done === "Yes") {
                     for (let i = 1; i < team.length; i++) {
-                        fs.appendFile("team.txt", my_toString(team[i]), (err) => {
+                        fs.appendFile("./output/team.txt", my_toString(team[i]), (err) => {
                             if (err) {
                                 console.log(err)
                             } else {
